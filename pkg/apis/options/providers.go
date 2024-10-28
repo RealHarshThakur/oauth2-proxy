@@ -174,8 +174,12 @@ type BitbucketOptions struct {
 }
 
 type CivoOptions struct {
-	// Team sets restrict logins to members of this team
-	Team string `json:"team,omitempty"`
+	// Account sets restrict logins to members of this account
+	Account string `json:"account,omitempty"`
+	// Permissions is a comma-separated set of permissions to restrict login with
+	Permissions []string `json:"permissions,omitempty"`
+	// PermissionsURL is the URL to get the user permissions under a given account
+	PermissionsURL string `json:"permissions_url,omitempty"`
 }
 
 type GitHubOptions struct {

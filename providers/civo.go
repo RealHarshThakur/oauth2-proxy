@@ -143,9 +143,16 @@ func (p *CivoProvider) EnrichSession(ctx context.Context, s *sessions.SessionSta
 	return nil
 }
 
+// Permission is the struct representing the Civo permission
+type Permission struct {
+	Code        string `json:"code"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
 // returns the set of permissions the user has in the given account (it's the sum of the permissions for each team_membership)
 // the information of the user is in the accessToken claims, meanwhile the account is taken from the configuration of the oauth-proxy
-func (p *CivoProvider) getUserPermissionsInAccount(ctx context.Context, accessToken string) (permissions []string, err error) {
+func (p *CivoProvider) getUserPermissionsInAccount(ctx context.Context, accessToken string) (permissions []Permission, err error) {
 
 	// adding the account_id as query param for the request
 	endpoint := fmt.Sprintf("%s%saccount_id=%s", p.PermissionsURL, joinerChar(p.PermissionsURL), p.Account)
@@ -169,9 +176,9 @@ func joinerChar(url string) string {
 }
 
 // returns true if the current session returns a set of permissions having a match with the requiredPermissions
-func (p *CivoProvider) isUserAllowed(userPermissions []string) bool {
+func (p *CivoProvider) isUserAllowed(userPermissions []Permission) bool {
 	for _, perm := range userPermissions {
-		if _, found := p.PermissionsMap[perm]; found {
+		if _, found := p.PermissionsMap[perm.Code]; found {
 			return true
 		}
 	}

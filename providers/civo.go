@@ -35,7 +35,7 @@ var (
 	CivoDefaultLoginURL = &url.URL{
 		Scheme: "https",
 		Host:   "auth.civo.com",
-		Path:   "authorize",
+		Path:   "v2/authorize",
 	}
 
 	// Default Redeem URL for Civo.
@@ -43,7 +43,7 @@ var (
 	CivoDefaultRedeemURL = &url.URL{
 		Scheme: "https",
 		Host:   "auth.civo.com",
-		Path:   "token",
+		Path:   "v2/token",
 	}
 
 	// Default Profile URL for Civo.
@@ -51,7 +51,7 @@ var (
 	CivoDefaultProfileURL = &url.URL{
 		Scheme: "https",
 		Host:   "auth.civo.com",
-		Path:   "userinfo",
+		Path:   "v2/userinfo",
 	}
 )
 

@@ -490,7 +490,9 @@ type LegacyProvider struct {
 	AzureGraphGroupField                   string   `flag:"azure-graph-group-field" cfg:"azure_graph_group_field"`
 	BitbucketTeam                          string   `flag:"bitbucket-team" cfg:"bitbucket_team"`
 	BitbucketRepository                    string   `flag:"bitbucket-repository" cfg:"bitbucket_repository"`
-	CivoTeam                               string   `flag:"civo-team" cfg:"civo_team"`
+	CivoAccount                            string   `flag:"civo-account" cfg:"civo_account"`
+	CivoPermissions                        []string `flag:"civo-permissions" cfg:"civo_permissions" `
+	CivoPermissionsURL                     string   `flag:"civo-permissions-url" cfg:"civo_permissions_url"`
 	GitHubOrg                              string   `flag:"github-org" cfg:"github_org"`
 	GitHubTeam                             string   `flag:"github-team" cfg:"github_team"`
 	GitHubRepo                             string   `flag:"github-repo" cfg:"github_repo"`
@@ -553,7 +555,9 @@ func legacyProviderFlagSet() *pflag.FlagSet {
 	flagSet.String("azure-graph-group-field", "", "configures the group field to be used when building the groups list(`id` or `displayName`. Default is `id`) from Microsoft Graph(available only for v2.0 oidc url). Based on this value, the `allowed-group` config values should be adjusted accordingly. If using `id` as group field, `allowed-group` should contains groups IDs, if using `displayName` as group field, `allowed-group` should contains groups name")
 	flagSet.String("bitbucket-team", "", "restrict logins to members of this team")
 	flagSet.String("bitbucket-repository", "", "restrict logins to user with access to this repository")
-	flagSet.String("civo-team", "", "restrict logins to members of this team")
+	flagSet.String("civo-account", "", "restrict logins to members of this account")
+	flagSet.StringSlice("civo-permissions", []string{}, "restrict logins to civo users with the given set of permissions")
+	flagSet.String("civo-permissions-url", "", "url to get the user permissions in a given account")
 	flagSet.String("github-org", "", "restrict logins to members of this organisation")
 	flagSet.String("github-team", "", "restrict logins to members of this team")
 	flagSet.String("github-repo", "", "restrict logins to collaborators of this repository")
@@ -746,7 +750,9 @@ func (l *LegacyProvider) convert() (Providers, error) {
 
 	case "civo":
 		provider.CivoConfig = CivoOptions{
-			Team: l.CivoTeam,
+			Account:        l.CivoAccount,
+			Permissions:    l.CivoPermissions,
+			PermissionsURL: l.CivoPermissionsURL,
 		}
 	case "google":
 		if len(l.GoogleGroupsLegacy) != 0 && !reflect.DeepEqual(l.GoogleGroupsLegacy, l.GoogleGroups) {

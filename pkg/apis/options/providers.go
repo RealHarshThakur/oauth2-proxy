@@ -34,6 +34,8 @@ type Provider struct {
 	ADFSConfig ADFSOptions `json:"ADFSConfig,omitempty"`
 	// BitbucketConfig holds all configurations for Bitbucket provider.
 	BitbucketConfig BitbucketOptions `json:"bitbucketConfig,omitempty"`
+	//CivoConfig holds all configurations for Civo provider.
+	CivoConfig CivoOptions `json:"civoConfig,omitempty"`
 	// GitHubConfig holds all configurations for GitHubC provider.
 	GitHubConfig GitHubOptions `json:"githubConfig,omitempty"`
 	// GitLabConfig holds all configurations for GitLab provider.
@@ -104,6 +106,9 @@ const (
 	// BitbucketProvider is the provider type for Bitbucket
 	BitbucketProvider ProviderType = "bitbucket"
 
+	// CivoProvider is the provider type for Civo
+	CivoProvider ProviderType = "civo"
+
 	// DigitalOceanProvider is the provider type for DigitalOcean
 	DigitalOceanProvider ProviderType = "digitalocean"
 
@@ -166,6 +171,15 @@ type BitbucketOptions struct {
 	Team string `json:"team,omitempty"`
 	// Repository sets restrict logins to user with access to this repository
 	Repository string `json:"repository,omitempty"`
+}
+
+type CivoOptions struct {
+	// Account sets restrict logins to members of this account
+	Account string `json:"account,omitempty"`
+	// Permissions is a comma-separated set of permissions to restrict login with
+	Permissions []string `json:"permissions,omitempty"`
+	// PermissionsURL is the URL to get the user permissions under a given account
+	PermissionsURL string `json:"permissions_url,omitempty"`
 }
 
 type GitHubOptions struct {
